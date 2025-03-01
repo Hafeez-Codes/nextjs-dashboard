@@ -143,6 +143,12 @@ export async function fetchInvoicesPages(query: string) {
 }
 
 export async function fetchInvoiceById(id: string) {
+    console.log('Received ID:', id);
+
+	if (!id || !/^[0-9a-fA-F-]{36}$/.test(id)) {
+		throw new Error(`Invalid UUID format: ${id}`);
+	}
+
 	try {
 		const data = await sql<InvoiceForm[]>`
         SELECT
@@ -157,7 +163,7 @@ export async function fetchInvoiceById(id: string) {
 		const invoice = data.map((invoice) => ({
 			...invoice,
 			// Convert amount from cents to dollars
-			amount: invoice.amount / 100,
+			amount: (invoice.amount / 100).toFixed(2),
 		}));
 
 		return invoice[0];
