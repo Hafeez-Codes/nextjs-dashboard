@@ -143,11 +143,6 @@ export async function fetchInvoicesPages(query: string) {
 }
 
 export async function fetchInvoiceById(id: string) {
-    console.log('Received ID:', id);
-
-	if (!id || !/^[0-9a-fA-F-]{36}$/.test(id)) {
-		throw new Error(`Invalid UUID format: ${id}`);
-	}
 
 	try {
 		const data = await sql<InvoiceForm[]>`
